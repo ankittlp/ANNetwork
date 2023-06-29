@@ -9,7 +9,7 @@ import Foundation
 
 import Combine
 
-protocol Request {
+public protocol Request {
     associatedtype Response: Decodable
     associatedtype ResponseParser: ResponseParserType where ResponseParser.Response == Response
     
@@ -24,18 +24,18 @@ protocol Request {
     func parameter() -> [String: Any]?
 }
 
-extension Request {
+public extension Request {
     
-    var baseUrl : String {
-        return BASE_URL
-    }
+//    var baseUrl : String {
+//        return BASE_URL
+//    }
      
     var reponseValidRange: ClosedRange<Int> {
         (200...399)
     }
 }
 
-protocol ResponseParserType {
+public protocol ResponseParserType {
     associatedtype Response
     
     func parse(data: Data) throws -> Response
@@ -43,17 +43,17 @@ protocol ResponseParserType {
 
 public typealias JSONDictionary = [String : Any]
 
-protocol ErrorParserType {
+public protocol ErrorParserType {
     
     func parse(data: JSONDictionary) -> Error?
 }
 
-protocol KeyBasedRequest {
+public protocol KeyBasedRequest {
     var key: String { get set }
     var value: String { get set }
 }
 
-extension KeyBasedRequest {
+public extension KeyBasedRequest {
     var key: String {
         get {
             "appid"
@@ -70,11 +70,11 @@ extension KeyBasedRequest {
     }
 }
 
-protocol RequestConvertable: Request {
+public protocol RequestConvertable: Request {
     func asURLRequest() throws -> URLRequest
 }
 
-extension RequestConvertable {
+public extension RequestConvertable {
     
     func asURLRequest() throws -> URLRequest {
         
@@ -113,6 +113,6 @@ extension RequestConvertable {
 }
 
 
-protocol RequestExecutor {
+public protocol RequestExecutor {
     func executeRequest<R>(request: R)  -> AnyPublisher<R.Response, Error> where R: RequestConvertable
 }

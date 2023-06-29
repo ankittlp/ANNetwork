@@ -7,19 +7,20 @@
 
 import Foundation
 
-struct GenericResponseParser<T: Decodable>: ResponseParserType {
+public struct GenericResponseParser<T: Decodable>: ResponseParserType {
 
-    typealias Response = T
-    
-    func parse(data: Data) throws -> T  {
+    public typealias Response = T
+    public init() {}
+    public func parse(data: Data) throws -> T  {
         try JSONDecoder().decode(Response.self, from: data)
     }
     
 }
 
-struct DefaultErrorParser: ErrorParserType {
+public struct DefaultErrorParser: ErrorParserType {
     
-     func parse(data: JSONDictionary) -> Error? {
+    public init() {}
+    public func parse(data: JSONDictionary) -> Error? {
         print("Error: \(data)")
 
         guard let message = data["message"] as? String else {

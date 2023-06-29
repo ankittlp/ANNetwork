@@ -8,19 +8,19 @@
 import Foundation
 import Combine
 
-class WebApiClient: RequestExecutor {
+public class WebApiClient: RequestExecutor {
     
     private var configuration: URLSessionConfiguration
     private var session: URLSession
     
-    init(sessionConfiguration: URLSessionConfiguration = URLSessionConfiguration.default) {
+    public init(sessionConfiguration: URLSessionConfiguration = URLSessionConfiguration.default) {
         configuration = URLSession.shared.configuration
     
         session = URLSession(configuration: configuration)
         
     }
     
-    func executeRequest<R>(request: R)  -> AnyPublisher<R.Response, Error> where R : RequestConvertable {
+    public func executeRequest<R>(request: R)  -> AnyPublisher<R.Response, Error> where R : RequestConvertable {
         // 1
         // Using Fail publisher this will help us to remove the `try! request.asURLRequest()` and make a early exit with guard in place.
         guard let requestt = try? request.asURLRequest() else {
